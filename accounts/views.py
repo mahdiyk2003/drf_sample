@@ -30,12 +30,6 @@ class UserLoginView(APIView):
 class UserLogoutView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request):
-        # ser_data = UserRegisterSerializer(data=request.data)
-        # if ser_data.is_valid():
-        #     user=ser_data.create(ser_data.validated_data)
-        #     token = Token.objects.create(user=user)
-        #     return Response(data=token.key, status=status.HTTP_201_CREATED)
-        # return Response(ser_data.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
         token=get_object_or_404(Token,user=request.user)
         token.delete()
         return Response(data={'message':'user logged out successfylly'},status=status.HTTP_202_ACCEPTED)
