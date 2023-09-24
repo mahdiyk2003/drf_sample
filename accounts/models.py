@@ -1,11 +1,13 @@
 from django.db import models
 from .managers import UserManager
 from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin
+from rest_framework.authtoken.models import Token
+
 # Create your models here.
 class User(AbstractBaseUser ):
 	email = models.EmailField(max_length=255, unique=True)
 	full_name = models.CharField(max_length=100)
-	is_author = models.BooleanField()
+	is_author = models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 
@@ -23,6 +25,8 @@ class User(AbstractBaseUser ):
 	def has_module_perms(self,app_label):
 		return True
 
+	def need_new_token(self):
+		return not Token.objects.filter(user=self).exists()
 	@property
 	def is_staff(self):
 		return self.is_admin

@@ -4,11 +4,11 @@ from django.urls import reverse
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     body = models.TextField()
     slug = models.SlugField()
     title = models.CharField(max_length=100, null=True, blank=True)
-    is_activate=models.BooleanField(default=True)
+    is_active=models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     class Meta:
@@ -24,8 +24,8 @@ class Post(models.Model):
     def user_can_like(self, user):
         user_like = user.ulikes.filter(post=self)
         if user_like.exists():
-            return True
-        return False
+            return False
+        return True
 
 
 
@@ -42,6 +42,7 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ulikes',null=True,blank=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='plikes',null=True,blank=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user} liked {self.post.slug}'

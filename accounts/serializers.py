@@ -27,3 +27,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 		if data['password'] != data['password2']:
 			raise serializers.ValidationError("passwords must match")
 		return data
+
+
+class UserLoginSerializer(serializers.Serializer):	
+	email=serializers.EmailField(required=True)
+	password=serializers.CharField(required=True,write_only=True)

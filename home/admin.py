@@ -5,7 +5,7 @@ from .models import Post,Comment,Like
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-	list_display = ('id', 'author', 'is_activate')
+	list_display = ('id', 'user', 'is_active')
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
